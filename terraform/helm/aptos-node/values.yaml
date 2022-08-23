@@ -151,6 +151,7 @@ fullnode:
       shared_mempool_max_concurrent_inbound_syncs: 16 # default 4
       max_broadcasts_per_peer: 2 # default 1
       default_failovers: 0 # default 3
+      shared_mempool_batch_size: 200 # default 100
     metrics: {}
     peer_monitoring_service: {}
     api: {}
