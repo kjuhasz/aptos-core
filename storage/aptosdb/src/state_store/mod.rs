@@ -3,8 +3,8 @@
 
 //! This file defines state store APIs that are related account state Merkle tree.
 
-use crate::epoch_by_version::EpochByVersionSchema;
 use crate::{
+    epoch_by_version::EpochByVersionSchema,
     metrics::{STATE_ITEMS, TOTAL_STATE_BYTES},
     schema::state_value::StateValueSchema,
     stale_state_value_index::StaleStateValueIndexSchema,
@@ -541,6 +541,11 @@ impl StateStore {
                 {
                     old_value_opt.map(|value| (old_version, value))
                 } else if let Some(base_version) = base_version {
+                    let _timer = OTHER_TIMERS_SECONDS
+                        .with_label_values(&[
+                            "put_stats_and_indices/get_state_value_with_version_by_version",
+                        ])
+                        .start_timer();
                     self.state_db
                         .get_state_value_with_version_by_version(key, base_version)?
                 } else {
