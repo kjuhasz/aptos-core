@@ -451,6 +451,10 @@ fn single_test_suite(test_name: &str) -> Result<ForgeConfig<'static>> {
         "setup_test" => config
             .with_initial_fullnode_count(1)
             .with_network_tests(&[&ForgeSetupTest]),
+        "full_node_perf" => config
+            .with_initial_validator_count(NonZeroUsize::new(20).unwrap())
+            .with_initial_fullnode_count(2)
+            .with_network_tests(&[&PerformanceBenchmarkWithFN]),
         _ => return Err(format_err!("Invalid --suite given: {:?}", test_name)),
     };
     Ok(single_test_suite)
@@ -458,7 +462,7 @@ fn single_test_suite(test_name: &str) -> Result<ForgeConfig<'static>> {
 
 fn land_blocking_test_suite() -> ForgeConfig<'static> {
     ForgeConfig::default()
-        .with_initial_validator_count(NonZeroUsize::new(2).unwrap())
+        .with_initial_validator_count(NonZeroUsize::new(20).unwrap())
         .with_initial_fullnode_count(2)
         .with_network_tests(&[&PerformanceBenchmarkWithFN])
 }
